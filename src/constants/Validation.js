@@ -27,7 +27,7 @@ export const LoginValidate = yup.object({
 })
 
 export const CompanyInfoValidate = yup.object({
-companyName : namePattern,
+companyName : country,
 address: namePattern,
 country : country,
 city : namePattern,

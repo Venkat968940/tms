@@ -11,6 +11,7 @@ const CustomDropDown = ({title, id, data, optionLabel, optionEqual, onchange,for
     size='small'
     options={data}
     fullWidth
+    disableClearable
     autoComplete={false}
     getOptionLabel={optionLabel}
     value={formik.values[id]}

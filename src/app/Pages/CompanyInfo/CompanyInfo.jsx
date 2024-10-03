@@ -2,6 +2,7 @@ import { Help } from "@mui/icons-material";
 import {
   Avatar,
   Button,
+  Divider,
   FormHelperText,
   Grid2,
   Typography,
@@ -12,10 +13,12 @@ import {
   CustomdropDown,
   CustomTextfield,
 } from "../../../components/Utils/CustomInput";
-import { CompanyInfoValidation } from "../../../constants";
+import { CompanyInfoValidation, CountryCode, PhoneCode } from "../../../constants";
+import FileUploader from "../../../components/Utils/Dropzone/FileUploader";
 
 const CompanyInfo = ({ nextStep }) => {
-  const [logo, setLogo] = useState(null);
+  const [previewImg, setPreviewImg] = useState(null);
+  const[isEdit, setIsEdit] = useState(false)
   const ValidationSchema = CompanyInfoValidation;
 
   const formik = useFormik({
@@ -33,7 +36,7 @@ const CompanyInfo = ({ nextStep }) => {
       personCountryCode: null,
       personNumber: "",
       email: "",
-      companyLogo: "",
+      companyLogo:  null,
     },
     validationSchema: ValidationSchema,
     onSubmit: handleSave,
@@ -58,26 +61,14 @@ const CompanyInfo = ({ nextStep }) => {
 
         <Grid2 container size={{ xs: 12, sm: 6 }} spacing={1}>
           <Grid2 size={{ xs: 12 }}>
-            <CustomTextfield
-              formik={formik}
-              id="companyName"
-              multiple={false}
-              placeholder="Name"
-              title="Company Name"
-            />
+            <CustomTextfield formik={formik} id="companyName" multiple={false} placeholder="Name" title="Company Name" required={true}/>
           </Grid2>
           <Grid2 size={{ xs: 12 }}>
-            <CustomTextfield
-              formik={formik}
-              id="address"
-              multiple={false}
-              placeholder="Street Number, House Number"
-              title="Head Office Address"
-            />
+            <CustomTextfield formik={formik} id="address" multiple={false} placeholder="Street Number, House Number" title="Head Office Address" required={true}/>
           </Grid2>
           <Grid2 size={{ xs: 12 }}>
             <CustomdropDown
-              data={[]}
+              data={CountryCode}
               formik={formik}
               id="country"
               onchange={(e, value) => {
@@ -90,55 +81,31 @@ const CompanyInfo = ({ nextStep }) => {
             />
           </Grid2>
           <Grid2 size={{ xs: 4 }}>
-            <CustomTextfield
-              formik={formik}
-              id="postcode"
-              multiple={false}
-              placeholder="Postal Code"
-              title="Postal Code"
-            />
+            <CustomTextfield formik={formik} id="postcode" multiple={false} placeholder="Postal Code" title="Postal Code" required={false}/>
           </Grid2>
-          <Grid2 size={{ xs: 8 }}>
-            <CustomTextfield
-              formik={formik}
-              id="city"
-              multiple={false}
-              placeholder="City Name"
-              title="City"
-            />
+          <Grid2 size={{ xs: 8 }}> 
+            <CustomTextfield formik={formik} id="city" multiple={false} placeholder="City Name" title="City" required={true}/>
           </Grid2>
 
           <Grid2 size={{ xs: 4 }}>
             <CustomdropDown
-              data={[]}
+              data={PhoneCode}
               formik={formik}
               id="countryCode"
               onchange={(e, value) => {
                 formik.setFieldValue("countryCode", value);
               }}
-              optionEqual={(option, value) => option.name === value.name}
-              optionLabel={(option) => option.name}
+              optionEqual={(option, value) => option.country === value.country}
+              optionLabel={(option) => option.code}
               placeholder="Select an Option"
               title="Country Code"
             />
           </Grid2>
           <Grid2 size={{ xs: 8 }}>
-            <CustomTextfield
-              formik={formik}
-              id="mobile"
-              multiple={false}
-              placeholder="Mobile Number"
-              title="Contact Number"
-            />
+            <CustomTextfield formik={formik} id="mobile" multiple={false} placeholder="Mobile Number" title="Contact Number" required={true}/>
           </Grid2>
           <Grid2 size={{ xs: 12 }}>
-            <CustomTextfield
-              formik={formik}
-              id="website"
-              multiple={false}
-              placeholder="http://"
-              title="Website URL"
-            />
+            <CustomTextfield formik={formik} id="website" multiple={false} placeholder="http://" title="Website URL" required={false}/>
           </Grid2>
 
           <Grid2
@@ -156,6 +123,7 @@ const CompanyInfo = ({ nextStep }) => {
               multiple={false}
               placeholder="Name"
               title="Name"
+              required={true}
             />
           </Grid2>
 
@@ -166,19 +134,20 @@ const CompanyInfo = ({ nextStep }) => {
               multiple={false}
               placeholder="Designation"
               title="Designation"
+              required={true}
             />
           </Grid2>
 
           <Grid2 size={{ xs: 4 }}>
             <CustomdropDown
-              data={[]}
+              data={PhoneCode}
               formik={formik}
               id="personCountryCode"
               onchange={(e, value) => {
                 formik.setFieldValue("personCountryCode", value);
               }}
-              optionEqual={(option, value) => option.name === value.name}
-              optionLabel={(option) => option.name}
+              optionEqual={(option, value) => option.country === value.country}
+              optionLabel={(option) => option.code}
               placeholder="Select an Option"
               title="Country Code"
             />
@@ -189,6 +158,7 @@ const CompanyInfo = ({ nextStep }) => {
                 id="personNumber"
                 multiple={false}
                 placeholder="Mobile Number"
+                required={true}
                 title="Contact Number"
               />
             </Grid2>
@@ -199,32 +169,28 @@ const CompanyInfo = ({ nextStep }) => {
               multiple={false}
               placeholder="Email"
               title="Email"
+              required={true}
             />
           </Grid2>
         </Grid2>
         <Grid2
           size={{ xs: 12, sm: 6 }}
-          sx={{ display: "flex", justifyContent: "center" }}
+          sx={{padding:2, }}
         >
-          <Grid2>
-            <Avatar
-              variant="square"
-              sx={{ height: 300, width: 300, marginBottom: 1 }}
-            />
-            <input type="file" onChange={(e) => handleLogo(e)} />
-            <FormHelperText sx={{ color: "red" }}>
-              {formik.touched.companyLogo && formik.errors.companyLogo}
-            </FormHelperText>
-          </Grid2>
+          <FileUploader formik={formik} previewImg={previewImg} setPreviewImg={setPreviewImg} isEdit={isEdit} />
         </Grid2>
       </Grid2>
-      <Button
+      <Divider sx={{marginBlock:1}}  orientation="horizontal"/>
+     <Grid2 sx={{display :"flex", justifyContent:"end"}}>
+     <Button
         variant="contained"
-        sx={{ marginBlock: 1 }}
+        sx={{ marginBottom: 1 }}
         onClick={formik.handleSubmit}
       >
         Continue
       </Button>
+     </Grid2>
+
     </Fragment>
   );
 };

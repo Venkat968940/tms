@@ -1,11 +1,12 @@
 import { Grid2, TextField, Typography } from '@mui/material'
 import React, { Fragment, memo } from 'react'
 
-const CustomTextField = ({ id, formik, title, multiple, placeholder }) => {
+const CustomTextField = ({ id, formik, title, multiple, placeholder, required }) => {
   return (
 <Fragment>
 <Typography variant='body1'marginBlock={1}>{title}</Typography>
-    <TextField 
+ <Grid2 sx={{display:"flex"}}>
+ <TextField 
      id={id}
     value={formik.values[id]}
     onChange={formik.handleChange}
@@ -21,6 +22,8 @@ const CustomTextField = ({ id, formik, title, multiple, placeholder }) => {
        maxLength: id==='mobile' || id==='phone' ? 10 : undefined,
      }}
     />
+     <Typography fontSize={26} marginLeft={1} color='primary' sx={{visibility : required ? 'visible' : "hidden"}}>*</Typography>
+ </Grid2>
 </Fragment>
   )
 }

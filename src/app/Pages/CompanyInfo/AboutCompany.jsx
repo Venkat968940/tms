@@ -1,12 +1,11 @@
-import { Button, Card, DialogActions, DialogContent, Grid2, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import React, { Fragment, useState } from 'react'
-import { AboutValidation } from '../../../constants'
+import { Button, Divider, Grid2, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { CustomTextfield } from '../../../components/Utils/CustomInput'
-import { Delete, Edit, Help } from '@mui/icons-material'
-import TeamDetails from './TeamDetails'
+import React, { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { showSnackbar } from '../../../components/Hooks/Reducers/SnackbarReducers'
+import { CustomTextfield } from '../../../components/Utils/CustomInput'
+import { AboutValidation } from '../../../constants'
+import TeamDetails from './TeamDetails'
 
 const AboutCompany = ({nextStep}) => {
   const dispatch = useDispatch()
@@ -34,11 +33,12 @@ dispatch(showSnackbar({open:true, type:"error", message : "Team Details can't be
   }
   return (
    <Fragment>
-    <Grid2 container sx={{height :"calc(95% - 50px)", overflowY:"scroll",  alignContent:"start"}}>
-    <Grid2 size={{ xs: 12 }}>
+    <Grid2 container sx={{height :"calc(95% - 50px)", overflowY:"scroll",  alignContent:"start", justifyContent:"center" }}>
+
+        <Grid2 container size={{ xs: 11 }} >   
+           <Grid2 size={{ xs: 12 }}>
           <Typography variant="h6">Tell us more about yourself</Typography>
         </Grid2>
-        <Grid2 container size={{ xs: 12, sm: 8 }} spacing={1}>
         <Grid2 size={{ xs: 12 }}>
             <CustomTextfield
               formik={formik}
@@ -46,15 +46,17 @@ dispatch(showSnackbar({open:true, type:"error", message : "Team Details can't be
               multiple={true}
               placeholder="Description (Max 200 words)"
               title="Brief Company Profile"
+              required={true}
             />
         </Grid2>
         <Grid2 size={{ xs: 12 }}>
             <CustomTextfield
               formik={formik}
               id="website"
-              multiple={true}
+              multiple={false}
               placeholder="http://"
               title={`Facebook/ LinkedIn URL, Youtube Link etc.`}
+              required={false}
             />
         </Grid2>
 
@@ -65,6 +67,7 @@ dispatch(showSnackbar({open:true, type:"error", message : "Team Details can't be
               multiple={true}
               placeholder="Description (Max 200 words)"
               title="Vision / Mission"
+              required={false}
             />
         </Grid2>
         <TeamDetails data={data} setData={setData}/>
@@ -72,7 +75,8 @@ dispatch(showSnackbar({open:true, type:"error", message : "Team Details can't be
 
 
     </Grid2>
-    <Grid2 sx={{display:"flex", }}>
+    <Divider orientation='horizontal' sx={{marginBlock:1}}/>
+    <Grid2 sx={{display:"flex", justifyContent: 'space-between' }}>
       <Button variant='outlined' sx={{marginRight:1}} onClick={()=> nextStep(prev=>prev-1)}>Back</Button>
       <Button variant='contained' onClick={formik.handleSubmit}>Continue</Button>
     </Grid2>

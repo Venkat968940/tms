@@ -1,35 +1,27 @@
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Button,
   Card,
-  CardHeader,
-  DialogActions,
-  DialogContent,
   Divider,
   Grid2,
   IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
-import React, { Fragment, useRef, useState } from "react";
-import { ProductsValidation } from "../../../constants";
 import { useFormik } from "formik";
-import { CustomTextfield } from "../../../components/Utils/CustomInput";
-import { Delete, Edit, Help } from "@mui/icons-material";
+import React, { Fragment, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { showSnackbar } from "../../../components/Hooks/Reducers/SnackbarReducers";
 import { useNavigate } from "react-router-dom";
+import { showSnackbar } from "../../../components/Hooks/Reducers/SnackbarReducers";
+import { CustomTextfield } from "../../../components/Utils/CustomInput";
+import { ProductsValidation } from "../../../constants";
 
 const Products = ({ nextStep, close }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isEdit, setIsEdit] = useState(false)
+  const [activeId, setActiveId] = useState(null)
   const editRef = useRef(null);
   const ValidationSchema = ProductsValidation;
 
@@ -40,7 +32,7 @@ const Products = ({ nextStep, close }) => {
       website: "",
     },
     validationSchema: ValidationSchema,
-    onSubmit: handleSave,
+    onSubmit: isEdit ? handleUpdate : handleSave,
   });
   function handleSave() {
     const { product_name, desc, website } = formik.values;
@@ -55,6 +47,20 @@ const Products = ({ nextStep, close }) => {
     setData(arr);
     setIsEdit(false)
     formik.resetForm();
+  }
+
+  function handleUpdate(){
+    const { product_name, desc, website } = formik.values;
+    const arr = [...data];
+    const objData = {
+      pname: product_name,
+      desc: desc,
+      url: website,
+    };
+    arr[activeId]= objData;
+    setIsEdit(false)
+    setData(arr)
+    formik.resetForm()
   }
 
   function handleSubmit() {
@@ -86,7 +92,8 @@ const Products = ({ nextStep, close }) => {
     setData(arr);
   }
 
-  function handleEdit(e) {
+  function handleEdit(e, id) {
+    setActiveId(id)
     setIsEdit(true)
     editRef?.current?.focus();
     console.log(e);
@@ -98,23 +105,24 @@ const Products = ({ nextStep, close }) => {
   }
   return (
     <Fragment>
-      <Grid2
-        container
+      <Grid2 container
         sx={{
           height: "calc(95% - 50px)",
           overflowY: "scroll",
           alignContent: "start",
+          justifyContent:"center"
         }}
       >
+        <Grid2 container size={{ xs: 10 }}>
         <Grid2 size={{ xs: 12 }}>
           <Typography variant="h6">Show your product portfolio</Typography>
         </Grid2>
-        <Grid2 container size={{ xs: 12, sm: 8 }}>
           <Grid2 size={{ xs: 12 }}>
             <Typography variant="body1" marginBlock={1}>
               Product Name
             </Typography>
-            <TextField
+         <Grid2 sx={{display:"flex"}}>
+         <TextField
               id="product_name"
               value={formik.values.product_name}
               onChange={formik.handleChange}
@@ -131,6 +139,8 @@ const Products = ({ nextStep, close }) => {
               }
               inputRef={editRef}
             />
+              <Typography fontSize={26} marginLeft={1} color='primary'>*</Typography>
+         </Grid2>
           </Grid2>
 
           <Grid2 size={{ xs: 12 }}>
@@ -140,6 +150,7 @@ const Products = ({ nextStep, close }) => {
               multiple={true}
               placeholder="Brief portfolio description"
               title="Product Portfolio Description"
+              required={false}
             />
           </Grid2>
 
@@ -150,15 +161,13 @@ const Products = ({ nextStep, close }) => {
               multiple={true}
               placeholder="http://"
               title={`Facebook/ LinkedIn URL, Youtube Link etc.  `}
+              required={false}
             />
-          </Grid2>
-          <Grid2 size={{ xs: 12 }}>
-            <Divider orientation="horizontal" sx={{ marginBlock: 1 }} />
           </Grid2>
 
           <Button
             variant="outlined"
-            sx={{ margin: "0 auto" }}
+            sx={{ margin: "0 auto", marginTop:2 }}
             onClick={formik.handleSubmit}
           >
             {isEdit ? "Update Product" : "Add Product"}
@@ -170,9 +179,10 @@ const Products = ({ nextStep, close }) => {
                 <Card>
                   <Grid2 sx={{ padding: 2 }}>
                     <Grid2 sx={{ display: "flex", justifyContent: "end" }}>
-                      <IconButton onClick={()=>handleEdit(val)}>
+                      <IconButton onClick={()=>handleEdit(val, idx)}>
                         <Edit fontSize="small" color="primary" />
                       </IconButton>
+                      <IconButton onClick={()=> handleDelete(idx)}><Delete fontSize="small" color="error"/></IconButton>
                     </Grid2>
                     <Typography sx={{ marginBlock: 1 }}>
                       Product Name : {val.pname}
@@ -189,7 +199,8 @@ const Products = ({ nextStep, close }) => {
             ))}
         </Grid2>
       </Grid2>
-      <Grid2 sx={{ display: "flex" }}>
+      <Divider orientation="horizontal" sx={{ marginBlock: 1 }} />
+      <Grid2 sx={{ display: "flex", justifyContent:"space-between" }}>
         <Button
           variant="outlined"
           sx={{ marginRight: 1 }}
