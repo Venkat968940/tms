@@ -26,13 +26,14 @@ export const CustomDataTable = ({ props }) => {
         columns={columns}
         rows={rows}
         loading={isLoading}
-        density="compact"
-        disableColumnMenu
+        density="standard"
+        disableColumnSorting
+        disableColumnMenu={true}
         disableRowSelectionOnClick={true}
-        disableColumnFilter
-        disableColumnSelector
-        disableDensitySelector
-        disableColumnResize
+        disableColumnFilter={true}
+        disableColumnSelector={true}
+        disableDensitySelector={true}
+        disableColumnResize={true}
         showColumnVerticalBorder={true}
         slots={{ footer: CustomFooter }}
         paginationModel={{ page, pageSize: rowsPerPage }}

@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-  const theme = createTheme();
+const theme = createTheme();
 
 export const MainTheme = makeStyles(() => ({
   root: root,
@@ -14,14 +14,18 @@ export const LoginTheme = makeStyles(() => ({
 
 export const HeaderTheme = makeStyles(() => ({
   root: headerRoot,
-  menu : headerMenu
+  menu: headerMenu,
 }));
 
+export const PaginationTheme = makeStyles(() => ({
+  root: paginationRoot,
+}));
 
-export const PaginationTheme = makeStyles(()=>({
-  root: paginationRoot
-}))
-
+export const CompanyTheme = makeStyles(() => ({
+  root: companyRoot,
+  layout : formRoot,
+  
+}));
 const root = {
   width: "100%",
   height: "100dvh",
@@ -56,14 +60,28 @@ const headerMenu = {
   display: "flex",
   alignItems: "center",
   height: "100%",
-  gap:1
-}
+  gap: 1,
+};
 
-
-const paginationRoot={
+const paginationRoot = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: '1rem',
+  padding: "1rem",
   marginTop: "auto",
-}
+};
+
+const companyRoot = {
+  height: "100%",
+  maxWidth: 750,
+  margin: "0 auto",
+  width: "fit-content",
+  boxShadow:
+    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);",
+  padding: '2rem',
+};
+const formRoot = {
+  height: "calc(95% - 50px)",
+  overflowY: "scroll",
+  alignContent: "start",
+};

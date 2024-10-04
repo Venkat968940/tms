@@ -1,4 +1,4 @@
-import { Button, Grid2 } from "@mui/material";
+import { Avatar, Button, Grid2 } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -37,14 +37,16 @@ const Login = () => {
   return (
     <Grid2 className={classes.root}>
       <Grid2 className={classes.mainRoot}>
+        <Avatar sx={{margin:"0 auto", marginBlock:1, width:60, height:60}}/>
         <CustomTextfield
           formik={formik}
           id="email"
           multiple={false}
           placeholder="Email Address"
           title="Email Address"
+          required={true}
         />
-        <CustomPassWord formik={formik} id="password" />
+        <CustomPassWord formik={formik} id="password" required={true}/>
         <Button
           fullWidth
           variant="contained"

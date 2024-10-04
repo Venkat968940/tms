@@ -1,7 +1,11 @@
 import { Grid2, TextField, Typography } from '@mui/material'
 import React, { Fragment, memo } from 'react'
 
-const CustomTextField = ({ id, formik, title, multiple, placeholder, required }) => {
+const CustomMobileField = ({ id, formik, title, multiple, placeholder, required }) => {
+    const handleNumber = (e) =>{
+        const inputValue = e.target.value.replace(/[^0-9]/g, '')
+        formik.setFieldValue(`${id}`, inputValue)
+    }
   return (
 <Fragment>
 <Typography variant='body1'marginBlock={1}>{title}</Typography>
@@ -9,7 +13,7 @@ const CustomTextField = ({ id, formik, title, multiple, placeholder, required })
  <TextField 
      id={id}
     value={formik.values[id]}
-    onChange={formik.handleChange}
+    onChange={handleNumber}
      placeholder={placeholder}
      error={formik.touched[id] && Boolean(formik.errors[id])}
      helperText={formik.touched[id] && formik.errors[id]}
@@ -19,7 +23,7 @@ const CustomTextField = ({ id, formik, title, multiple, placeholder, required })
      multiline={multiple}
      rows={4}
      inputProps={{
-       maxLength: id==='mobile' || id==='phone' ? 10 : undefined,
+       maxLength:  10 ,
      }}
     />
      <Typography fontSize={26} marginLeft={1} color={formik.touched[id] && Boolean(formik.errors[id]) ? "error" : "primary"} sx={{visibility : required ? 'visible' : "hidden"}}>*</Typography>
@@ -28,4 +32,4 @@ const CustomTextField = ({ id, formik, title, multiple, placeholder, required })
   )
 }
 
-export default memo(CustomTextField)
+export default memo(CustomMobileField)

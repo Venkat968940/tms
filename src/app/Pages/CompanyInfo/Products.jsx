@@ -6,7 +6,7 @@ import {
   Grid2,
   IconButton,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import React, { Fragment, useRef, useState } from "react";
@@ -15,13 +15,15 @@ import { useNavigate } from "react-router-dom";
 import { showSnackbar } from "../../../components/Hooks/Reducers/SnackbarReducers";
 import { CustomTextfield } from "../../../components/Utils/CustomInput";
 import { ProductsValidation } from "../../../constants";
+import { CompanyTheme } from "../../../styles";
 
-const Products = ({ nextStep, close }) => {
+const Products = ({ nextStep }) => {
+  const classes = CompanyTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [isEdit, setIsEdit] = useState(false)
-  const [activeId, setActiveId] = useState(null)
+  const [isEdit, setIsEdit] = useState(false);
+  const [activeId, setActiveId] = useState(null);
   const editRef = useRef(null);
   const ValidationSchema = ProductsValidation;
 
@@ -45,11 +47,11 @@ const Products = ({ nextStep, close }) => {
 
     arr.push(objData);
     setData(arr);
-    setIsEdit(false)
+    setIsEdit(false);
     formik.resetForm();
   }
 
-  function handleUpdate(){
+  function handleUpdate() {
     const { product_name, desc, website } = formik.values;
     const arr = [...data];
     const objData = {
@@ -57,15 +59,14 @@ const Products = ({ nextStep, close }) => {
       desc: desc,
       url: website,
     };
-    arr[activeId]= objData;
-    setIsEdit(false)
-    setData(arr)
-    formik.resetForm()
+    arr[activeId] = objData;
+    setIsEdit(false);
+    setData(arr);
+    formik.resetForm();
   }
 
   function handleSubmit() {
     if (data.length > 0) {
-      close(false);
       navigate("/dashboard");
       dispatch(
         showSnackbar({
@@ -90,57 +91,51 @@ const Products = ({ nextStep, close }) => {
     const arr = [...data];
     arr.splice(i, 1);
     setData(arr);
+    formik.resetForm();
   }
 
   function handleEdit(e, id) {
-    setActiveId(id)
-    setIsEdit(true)
+    setActiveId(id);
+    setIsEdit(true);
     editRef?.current?.focus();
     console.log(e);
     formik.setValues({
-      desc : e?.desc,
-      product_name : e?.pname,
-      website : e?.url
-    })
+      desc: e?.desc,
+      product_name: e?.pname,
+      website: e?.url,
+    });
   }
   return (
     <Fragment>
-      <Grid2 container
-        sx={{
-          height: "calc(95% - 50px)",
-          overflowY: "scroll",
-          alignContent: "start",
-          justifyContent:"center"
-        }}
-      >
+      <Grid2 container className={classes.layout}>
         <Grid2 container size={{ xs: 10 }}>
-        <Grid2 size={{ xs: 12 }}>
-          <Typography variant="h6">Show your product portfolio</Typography>
-        </Grid2>
+          <Grid2 size={{ xs: 12 }}>
+            <Typography variant="h6">Show your product portfolio</Typography>
+          </Grid2>
           <Grid2 size={{ xs: 12 }}>
             <Typography variant="body1" marginBlock={1}>
               Product Name
             </Typography>
-         <Grid2 sx={{display:"flex"}}>
-         <TextField
-              id="product_name"
-              value={formik.values.product_name}
-              onChange={formik.handleChange}
-              placeholder="Product Name"
-              size="small"
-              fullWidth
-              autoComplete="off"
-              error={
-                formik.touched.product_name &&
-                Boolean(formik.errors.product_name)
-              }
-              helperText={
-                formik.touched.product_name && formik.errors.product_name
-              }
-              inputRef={editRef}
-            />
-              <Typography fontSize={26} marginLeft={1} color='primary'>*</Typography>
-         </Grid2>
+            <Grid2 sx={{ display: "flex" }}>
+              <TextField
+                id="product_name"
+                value={formik.values.product_name}
+                onChange={formik.handleChange}
+                placeholder="Product Name"
+                size="small"
+                fullWidth
+                autoComplete="off"
+                error={
+                  formik.touched.product_name &&
+                  Boolean(formik.errors.product_name)
+                }
+                helperText={
+                  formik.touched.product_name && formik.errors.product_name
+                }
+                inputRef={editRef}
+              />
+             <Typography fontSize={26} marginLeft={1} color={formik.touched.product_name && Boolean(formik.errors.product_name) ? "error" : "primary"}>*</Typography>
+            </Grid2>
           </Grid2>
 
           <Grid2 size={{ xs: 12 }}>
@@ -167,7 +162,7 @@ const Products = ({ nextStep, close }) => {
 
           <Button
             variant="outlined"
-            sx={{ margin: "0 auto", marginTop:2 }}
+            sx={{ margin: "0 auto", marginTop: 2 }}
             onClick={formik.handleSubmit}
           >
             {isEdit ? "Update Product" : "Add Product"}
@@ -179,10 +174,12 @@ const Products = ({ nextStep, close }) => {
                 <Card>
                   <Grid2 sx={{ padding: 2 }}>
                     <Grid2 sx={{ display: "flex", justifyContent: "end" }}>
-                      <IconButton onClick={()=>handleEdit(val, idx)}>
+                      <IconButton onClick={() => handleEdit(val, idx)}>
                         <Edit fontSize="small" color="primary" />
                       </IconButton>
-                      <IconButton onClick={()=> handleDelete(idx)}><Delete fontSize="small" color="error"/></IconButton>
+                      <IconButton onClick={() => handleDelete(idx)}>
+                        <Delete fontSize="small" color="error" />
+                      </IconButton>
                     </Grid2>
                     <Typography sx={{ marginBlock: 1 }}>
                       Product Name : {val.pname}
@@ -200,7 +197,7 @@ const Products = ({ nextStep, close }) => {
         </Grid2>
       </Grid2>
       <Divider orientation="horizontal" sx={{ marginBlock: 1 }} />
-      <Grid2 sx={{ display: "flex", justifyContent:"space-between" }}>
+      <Grid2 sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button
           variant="outlined"
           sx={{ marginRight: 1 }}

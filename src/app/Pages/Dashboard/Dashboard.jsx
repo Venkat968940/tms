@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { openRoute } from "../../../components/Hooks/Reducers/Trigger";
 import { CustomDataTable } from "../../../components/Utils/CustomDataTable/CustomDataTable";
+import { DashboardTableData, TableData } from "../../../constants";
 import { DashboardData } from "../../../constants/ColumnsData";
 
 const Dashboard = () => {
@@ -25,10 +26,25 @@ const Dashboard = () => {
       // Perform delete action, e.g., remove the appointment
       console.log(`Delete action on appointment ID: ${id}`);
     }
+    else if(actionType === 'edit'){
+      console.log('Edit action on appointment ID', id)
+    }
     // refetch();
   };
 
-  const rows = [];
+  const rows = TableData.map((val,idx)=>({
+    id: val.id,
+    sno: idx + 1,
+    company_name : val.company_name,
+    country : val.country,
+    city : val.city,
+    website : val.website,
+    mobile : val.mobile,
+    contact_person : val.contact_person,
+    contact_person_mobile : val.contact_person_mobile,
+    email: val.email,
+    company_logo : val.company_logo
+  }));
   const columns = DashboardData(handleAction);
 
   const props = {

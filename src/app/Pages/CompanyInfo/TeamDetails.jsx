@@ -88,7 +88,7 @@ const TeamDetails = ({data, setData}) => {
               error={formik.touched.emp_name && Boolean(formik.errors.emp_name)}
               helperText={formik.touched.emp_name && formik.errors.emp_name}
               inputRef={editRef}/>
-              <Typography fontSize={26} marginLeft={1} color='primary'>*</Typography>
+              <Typography fontSize={26} marginLeft={1} color={formik.touched.emp_name && Boolean(formik.errors.emp_name) ? "error" : "primary"}>*</Typography>
 </Grid2>
     </Grid2>
     <Grid2 size={{xs:12}}>

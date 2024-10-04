@@ -6,8 +6,10 @@ import { showSnackbar } from '../../../components/Hooks/Reducers/SnackbarReducer
 import { CustomTextfield } from '../../../components/Utils/CustomInput'
 import { AboutValidation } from '../../../constants'
 import TeamDetails from './TeamDetails'
+import { CompanyTheme } from '../../../styles'
 
 const AboutCompany = ({nextStep}) => {
+  const classes = CompanyTheme()
   const dispatch = useDispatch()
   const [data, setData] = useState([])
   const ValidationSchema = AboutValidation
@@ -33,7 +35,7 @@ dispatch(showSnackbar({open:true, type:"error", message : "Team Details can't be
   }
   return (
    <Fragment>
-    <Grid2 container sx={{height :"calc(95% - 50px)", overflowY:"scroll",  alignContent:"start", justifyContent:"center" }}>
+    <Grid2 container className={classes.layout}>
 
         <Grid2 container size={{ xs: 11 }} >   
            <Grid2 size={{ xs: 12 }}>

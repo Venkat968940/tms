@@ -10,7 +10,7 @@ const emailPattern = yup.string().email('Enter valid email').required('Email is 
 
 const passwordPattern = yup.string().min(8).required('Password is required!')
 
-const mobilePattern = yup.string().matches(phoneRegExp, 'Phone number is not valid')
+const mobilePattern = yup.string().matches(phoneRegExp, 'Phone number is not valid').min(10,"Mobile number must be atleast 10 characters")
 .required('Phone number is required')
 
 const namePattern = yup.string().required("This field is required")
@@ -21,45 +21,60 @@ const websitePattern = yup.string().matches(urlRegex, 'Please enter a valid URL'
 
 const linkedInPattern = yup.string().matches(linkedInUrlRegExp, 'Enter a valid LinkedIn profile URL').required('LinkedIn URL is required')
 
+const companyName = yup.string().required("Company name is required")
+const address = yup.string().required("Address is required")
+const city = yup.string().required("City is required")
+const postcode = yup.string().required("Postal code is required")
+const personName = yup.string().required("Name is required")
+const designation = yup.string().required("Designation is required")
+const companyLogo = yup.array().min(1, "Company Logo is required")
+const countrycode = yup.object().required('Country code is required')
+
+const companyProfile= yup.string().required('Company Profile is required')
+const vision= yup.string().required('Vision is required')
+const emp_name = yup.string().required("Employee name is required")
+const emp_designation = yup.string().required("Employee designation is required")
+const emp_profile = yup.string().required("Employee profile is required")
+
+const product_name = yup.string().required("Product name is required")
+const desc = yup.string().required("Product description is required")
 export const LoginValidate = yup.object({
     email : emailPattern,
     password : passwordPattern
 })
 
 export const CompanyInfoValidate = yup.object({
-companyName : country,
-address: namePattern,
+companyName : companyName,
+address: address,
 country : country,
-city : namePattern,
-postcode : namePattern,
-countryCode : country,
+city : city,
+postcode : postcode,
+countryCode : countrycode,
 mobile : mobilePattern,
 website : websitePattern,
-personName : namePattern,
-designation : namePattern,
-personCountryCode : country,
+personName : personName,
+designation : designation,
+personCountryCode : countrycode,
 personNumber : mobilePattern,
 email : emailPattern,
-companyLogo : namePattern
+companyLogo : companyLogo
 })
 
 export const AboutValidate = yup.object({
-    companyProfile : namePattern,
+    companyProfile : companyProfile,
     website : websitePattern,
-    vision: namePattern,
-   
-
+    vision: vision,
 })
 
 export const MemberValidate = yup.object({
-    emp_name : namePattern,
-    emp_designation : namePattern,
-    emp_profile : namePattern,
+    emp_name : emp_name,
+    emp_designation : emp_designation,
+    emp_profile : emp_profile,
     linkedinLink : linkedInPattern,
 })
 
 export const ProductsValidate = yup.object({
-    product_name : namePattern,
-    desc : namePattern,
+    product_name : product_name,
+    desc : desc,
     website : websitePattern,
 })

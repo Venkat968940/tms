@@ -5,7 +5,6 @@ import { useDropzone } from 'react-dropzone';
 
 export const FileUploader = ({formik, previewImg, setPreviewImg, isEdit}) => {
   const theme = useTheme();
-  const [image, setImage] = useState(null)
   const [edit, setEdit] = useState(false)
 
   const { acceptedFiles, getInputProps, getRootProps, fileRejections } = useDropzone({
@@ -15,7 +14,7 @@ export const FileUploader = ({formik, previewImg, setPreviewImg, isEdit}) => {
           preview: URL.createObjectURL(file),
         })
       );
-      formik.setFieldValue("companyLogo", imgData[0])
+      formik.setFieldValue("companyLogo", imgData)
       setEdit(true)
     },
     accept: {
@@ -49,13 +48,13 @@ export const FileUploader = ({formik, previewImg, setPreviewImg, isEdit}) => {
   ));
 
   const validateImg = (
-    <FormHelperText sx={{ color: theme.palette.error.main }}>
+    <FormHelperText  sx={{ color: theme.palette.error.main, textAlign:"center" }}>
       {formik.touched.companyLogo && formik.errors.companyLogo}
     </FormHelperText>
   );
 
   function handleClear(e){
-    formik.setFieldValue("companyLogo", null);
+    formik.setFieldValue("companyLogo", []);
     setEdit(false);
     setPreviewImg(null);
   }
@@ -68,7 +67,7 @@ export const FileUploader = ({formik, previewImg, setPreviewImg, isEdit}) => {
   {previewImg!=null ? (
     <Avatar variant='square' sx={{width:250, height: 300, margin:'0 auto'}} src={`${previewImg}`}/>
   ) : edit ? (
-    <Avatar variant='square'  sx={{width:250, height: 300, margin:'0 auto'}}src={formik.values?.companyLogo?.preview}/>
+    <Avatar variant='square'  sx={{width:250, height: 300, margin:'0 auto'}}src={formik.values?.companyLogo[0]?.preview}/>
   ) : <Avatar variant="square" sx={{width:250, height: 300, margin:'0 auto'}}/>}
   {/* <Avatar variant='rounded' sx={{width:250, height: 300, margin:'0 auto'}} src={image?.preview}/> */}
       <Grid2 sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
